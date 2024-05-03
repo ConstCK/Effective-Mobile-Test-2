@@ -1,15 +1,12 @@
+import jsonlines
+
 from services import Validator
 
 
-class Budget:
-    def __init__(self, name: str, db_name: str) -> None:
-        self.validator = Validator()
+class DataBase:
+    def __init__(self, name) -> None:
         self.name = name
-        self.db = db_name
-        self.id = 0
-
-    def __str__(self) -> str:
-        return f"Личный финансовый кошелек: {self.name}"
+        self.validator = Validator()
 
     def get_all_data(self) -> list[dict]:
         """Получение всей информации из базы данных"""

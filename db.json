@@ -1,6 +1,1 @@
-{"id": 0, "name": "John", "balance": 46000, "spending": 0, "income": 181000, "Расходы": 0}
-{"id": 1, "category": "Доходы", "date": "2024-05-04", "price": 40000, "description": "Salary!"}
-{"id": 2, "category": "Расходы", "date": "2024-05-04", "price": 2000, "description": "beer"}
-{"id": 3, "category": "Расходы", "date": "2024-05-04", "price": 3000, "description": "snacks"}
-{"id": 4, "category": "Доходы", "date": "2024-05-04", "price": 10000, "description": "bonus"}
-{"id": 5, "category": "Доходы", "date": "2024-05-04", "price": 1000, "description": "new profit"}
+{"id": 0, "name": "John", "balance": 0, "spending": 0, "income": 0}

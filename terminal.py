@@ -15,6 +15,7 @@ class Terminal:
         """Приветствие в терминале"""
         print(f"Добро пожаловать в {self.conn}")
         print(f"Используйте ввод чисел (1-7) для навигации по меню")
+        print("*"*100)
 
     @staticmethod
     def show_menu() -> None:
@@ -116,15 +117,14 @@ class Terminal:
 
     def change_data(self) -> None:
         """Изменение существующих данных"""
-        while True:
-            try:
-                data_id = self.service.id_input()
-                break
-            except:
-                print('sadfsadfsafsafsa')
-                continue
+
+        data_id = self.service.id_input()
         data = self.service.input_data()
-        print(self.conn.change_data(data_id=data_id, new_data=data))
+        try:
+            print(self.conn.change_data(data_id=data_id, new_data=data))
+        except Exception as error:
+            print(error)
+            return
 
     def run_program(self) -> None:
         """Ввод команд меню для управления справочником"""

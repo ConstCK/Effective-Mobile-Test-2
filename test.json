@@ -1,0 +1,5 @@
+{"id": 0, "name": "John Doe", "balance": 49000, "spending": 11000, "income": 60000}
+{"id": 1, "category": "Доходы", "date": "2024-05-04", "price": 55000, "description": "ЗП!"}
+{"id": 2, "category": "Доходы", "date": "2024-05-04", "price": 5000, "description": "Премия"}
+{"id": 3, "category": "Расходы", "date": "2024-05-04", "price": 7000, "description": "Коммунальные услуги"}
+{"id": 4, "category": "Расходы", "date": "2024-05-04", "price": 4000, "description": "Обслуживание автомобиля"}

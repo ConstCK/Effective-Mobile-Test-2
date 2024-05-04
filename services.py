@@ -19,6 +19,14 @@ class Validator:
         return False
 
     @staticmethod
+    def check_if_exists(data_id: int, all_data: list[dict]) -> bool:
+        """Проверка вводимых данных на повторение"""
+        if all_data:
+            result = any([True if data_id == x.get("id") else False for x in all_data[1:]])
+            return result
+        return False
+
+    @staticmethod
     def validate_year(year: str) -> bool:
         """Валидация вводимых данных (года)"""
         return len(year) == 4 and 2100 > int(year) > 2000
@@ -95,7 +103,7 @@ class TerminalService:
                 if self.validator.validate_id(data_id):
                     return data_id
                 else:
-                    print("Некорректный ввод суммы")
+                    print("Некорректный ввод id")
 
     @staticmethod
     def category_input() -> Literal["Доходы", "Расходы"]:

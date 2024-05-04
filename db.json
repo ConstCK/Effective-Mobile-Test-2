@@ -1,7 +1,6 @@
-{"id": 0, "name": "John", "balance": 999, "spending": 10000, "income": 10999}
-{"price": 5999, "description": "Salary!", "id": 1, "category": "Доходы", "date": "2024-05-04"}
-{"price": 2000, "description": "Pizza buying", "id": 2, "category": "Расходы", "date": "2024-05-04"}
-{"price": 1000, "description": "Beer buying", "id": 3, "category": "Расходы", "date": "2024-05-04"}
-{"price": 5000, "description": "Bonus", "id": 4, "category": "Доходы", "date": "2024-05-04"}
-{"price": 3000, "description": "Snacks buying", "id": 5, "category": "Расходы", "date": "2024-05-04"}
-{"price": 4000, "description": "Whores buying", "id": 6, "category": "Расходы", "date": "2024-05-04"}
+{"id": 0, "name": "John", "balance": 46000, "spending": 0, "income": 181000, "Расходы": 0}
+{"id": 1, "category": "Доходы", "date": "2024-05-04", "price": 40000, "description": "Salary!"}
+{"id": 2, "category": "Расходы", "date": "2024-05-04", "price": 2000, "description": "beer"}
+{"id": 3, "category": "Расходы", "date": "2024-05-04", "price": 3000, "description": "snacks"}
+{"id": 4, "category": "Доходы", "date": "2024-05-04", "price": 10000, "description": "bonus"}
+{"id": 5, "category": "Доходы", "date": "2024-05-04", "price": 1000, "description": "new profit"}

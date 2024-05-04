@@ -7,14 +7,22 @@ from services import Validator
 
 
 class Budget:
-    def __init__(self, name: str, db_name: str) -> None:
+    def __init__(self, name: str, db_name: str, new: bool) -> None:
         self.validator = Validator()
         self.name = name
         self.db = db_name
-        self.id: int = 1
-        with jsonlines.open(self.db, mode='w') as writer:
-            data = {"id": 0, "name": self.name, "balance": 0, "spending": 0, "income": 0}
-            writer.write(data)
+        self.new = new
+        if self.new:
+            """Служебный запуск для создания пустой БД (для ручного тестирования)"""
+            with jsonlines.open(self.db, mode='w') as writer:
+                data = {"id": 0, "name": self.name, "balance": 0, "spending": 0, "income": 0}
+                self.id: int = 1
+                writer.write(data)
+            self.new = False
+        else:
+            with jsonlines.open(self.db, mode='r') as reader:
+                last_id = [item for item in reader][-1].get("id")
+                self.id = last_id + 1
 
     def __str__(self) -> str:
         return f"Личный финансовый кошелек пользователя: {self.name}"
@@ -42,25 +50,25 @@ class Budget:
         result = list(filter(lambda obj: obj.get("date") == f"{year}-{month}-{day}", all_data[1:]))
         return result
 
-    def get_data_by_price(self,
-                          price: int,
-                          mode: Literal["greater", "lower", "equal"]) -> list[dict] | list:
+    def get_data_by_sum(self,
+                        amount: int,
+                        mode: Literal["greater", "lower", "equal"] = "equal") -> list[dict] | list:
         """Получение информации из базы данных по сумме"""
         all_data = self.get_all_data()
         if mode == "greater":
-            result = list(filter(lambda obj: obj.get('price') > price, all_data[1:]))
+            result = list(filter(lambda obj: int(obj.get('price')) > amount, all_data[1:]))
         elif mode == "lower":
-            result = list(filter(lambda obj: obj.get('price') < price, all_data[1:]))
+            result = list(filter(lambda obj: int(obj.get('price')) < amount, all_data[1:]))
         elif mode == "equal":
-            result = list(filter(lambda obj: obj.get('price') == price, all_data[1:]))
+            result = list(filter(lambda obj: int(obj.get('price')) == amount, all_data[1:]))
         else:
             raise Exception("Ошибка режима")
         return result
 
-    def add_data(self, data: dict, mode: Literal["spending", "income"]) -> str:
+    def add_data(self, data: dict, mode: Literal["Расходы", "Доходы"]) -> str:
         """Добавление информации в базу данных в зависимости от режима"""
         all_data = self.get_all_data()
-        data = self.create_spending(data) if mode == "spending" else self.create_income(data)
+        data = self.create_spending(data) if mode == "Расходы" else self.create_income(data)
         if self.validator.check_duplicates(data, all_data):
             return "Объект уже существует"
         self.change_balance(mode=mode, value=data.get("price"))
@@ -78,41 +86,47 @@ class Budget:
 
     def create_spending(self, data: dict) -> dict | Exception:
         """Создание записи с расходами (Вспомогательная функция)"""
-        data.update({"id": self.id, "category": "Расходы", "date": str(datetime.date.today())})
+        result = {"id": self.id, "category": "Расходы", "date": str(datetime.date.today())}
+        result.update(data)
         self.id += 1
-        if self.validator.validate_data(data):
-            return data
+        if self.validator.validate_data(result):
+            return result
         raise Exception("Некорректные данные")
 
     def create_income(self, data: dict) -> dict | Exception:
         """Создание записи с доходами (Вспомогательная функция)"""
-        data.update({"id": self.id, "category": "Доходы", "date": str(datetime.date.today())})
+        result = {"id": self.id, "category": "Доходы", "date": str(datetime.date.today())}
+        result.update(data)
+
         self.id += 1
-        if self.validator.validate_data(data):
-            return data
+        if self.validator.validate_data(result):
+            return result
         raise Exception("Некорректные данные")
 
-    def update_data(self, data_id: int, new_data: dict) -> tuple[list[dict], dict, dict,] | Exception:
+    def update_data(self, data_id: int, new_data: dict) -> tuple[list[dict], dict, dict,]:
         """Изменение записи (Вспомогательная функция)"""
         all_data = self.get_all_data()
-        data: dict = list(filter(lambda obj: obj["id"] == data_id, all_data))[0]
+        try:
+            data: dict = list(filter(lambda obj: obj["id"] == data_id, all_data))[0]
+        except IndexError:
+            raise Exception("Несуществующий индекс")
         if self.validator.validate_data(new_data):
             reserved_data = data.copy()
             data.update(new_data)
             return all_data, data, reserved_data
         raise Exception("Некорректные данные")
 
-    def change_balance(self, mode: Literal["spending", "income"], value: int) -> None:
+    def change_balance(self, mode: Literal["Расходы", "Доходы"], value: int) -> None:
         """Изменение общего баланса при создании новой записи (Вспомогательная функция)"""
         all_data = self.get_all_data()
         meta: list[dict] = [i for i in all_data if i.get("id") == 0]
         balance: int = meta[0].get("balance")
         spending: int = meta[0].get("spending")
         income: int = meta[0].get("income")
-        balance = balance + value if mode == "income" else balance - value
-        spending = spending + value if mode == "spending" else spending
-        income = income + value if mode == "income" else income
-        meta[0].update({"balance": balance, "spending": spending, "income": income})
+        balance = balance + value if mode == "Доходы" else balance - value
+        spending = spending + value if mode == "Расходы" else spending
+        income = income + value if mode == "Доходы" else income
+        meta[0].update({"balance": balance, "Расходы": spending, "income": income})
         with jsonlines.open(self.db, mode="w") as writer:
             writer.write_all(all_data)
 

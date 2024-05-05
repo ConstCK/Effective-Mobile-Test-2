@@ -1,5 +1,4 @@
 import datetime
-
 import pytest
 
 from budget import Budget
@@ -87,8 +86,8 @@ def test_get_by_date(year, month, day, expected):
 
 
 @pytest.mark.parametrize("amount, expected", [(s_1.get("amount"),
-                                              [{"id": 3, "category": "Расходы", "date": str(datetime.date.today()),
-                                                "amount": s_1.get("amount"), "description": s_1.get("description")}])])
+                                               [{"id": 3, "category": "Расходы", "date": str(datetime.date.today()),
+                                                 "amount": s_1.get("amount"), "description": s_1.get("description")}])])
 def test_get_by_amount(amount, expected):
     """Тест получения данных по id"""
     assert my_test.get_data_by_sum(amount) == expected

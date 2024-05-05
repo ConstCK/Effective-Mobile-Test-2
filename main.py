@@ -1,4 +1,3 @@
-from budget import Budget
 from terminal import Terminal
 
 

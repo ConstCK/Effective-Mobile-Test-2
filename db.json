@@ -1,1 +1,4 @@
-{"id": 0, "name": "John", "balance": 0, "spending": 0, "income": 0}
+{"id": 0, "name": "John", "balance": 39500, "spending": 12500, "income": 52000}
+{"id": 1, "category": "Расходы", "date": "2024-05-05", "amount": 7500, "description": "Коммунальные платежи"}
+{"id": 2, "category": "Расходы", "date": "2024-05-05", "amount": 5000, "description": "Покупка бензина"}
+{"id": 3, "category": "Доходы", "date": "2024-05-03", "amount": 52000, "description": "ЗП"}

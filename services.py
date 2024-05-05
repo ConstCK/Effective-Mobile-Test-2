@@ -8,7 +8,7 @@ class Validator:
     @staticmethod
     def validate_data(data: dict[str, Any]) -> bool:
         """Валидация вводимых данных о расходах/доходах"""
-        return len(data["description"]) > 1 and data["price"] > 0
+        return len(data["description"]) > 1 and data["amount"] > 0
 
     @staticmethod
     def check_duplicates(data: dict, all_data: list[dict]) -> bool:
@@ -89,7 +89,7 @@ class TerminalService:
             elif choice == "0":
                 return False
             else:
-                print("Некорректный ввод (должно быть 1 или 0")
+                print("Некорректный ввод (должно быть 1 или 0)")
 
     def id_input(self) -> int:
         """Сервис ввода id"""
@@ -115,12 +115,12 @@ class TerminalService:
             elif choice == "2":
                 return "Доходы"
             else:
-                print("Некорректный ввод (должно быть 1 или 2")
+                print("Некорректный ввод (должно быть 1 или 2)")
 
     def date_input(self) -> dict[str, str]:
         """Сервис ввода даты"""
         while True:
-            year = input("Введите год (в формате 2021): ")
+            year = input("Введите год (в формате 2024): ")
             month = input("Введите месяц (в формате 05): ")
             day = input("Введите день (в формате 03): ")
             if self.validator.validate_year(year) and \
@@ -172,7 +172,7 @@ class TerminalService:
                 break
             else:
                 print("Некорректный ввод описания")
-        return {"price": sum_data, "description": description}
+        return {"amount": sum_data, "description": description}
 
     def menu_choice_input(self) -> int:
         """Сервис ввода номера операции меню терминала"""

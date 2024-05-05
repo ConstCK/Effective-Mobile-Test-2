@@ -1,7 +1,6 @@
 import datetime
 
 import pytest
-import jsonlines
 
 from budget import Budget
 from fake_db import *
@@ -39,25 +38,25 @@ def test_get_all_data():
     """Тест получения всех данных из БД"""
     assert my_test.get_all_data() == [
         {"id": 0, "name": "John Doe", "balance": 19000, "spending": 11000, "income": 30000},
-        {"id": 1, "category": "Доходы", "date": str(datetime.date.today()), "price": i_1.get("price"),
+        {"id": 1, "category": "Доходы", "date": str(datetime.date.today()), "amount": i_1.get("amount"),
          "description": i_1.get("description")},
-        {"id": 2, "category": "Доходы", "date": str(datetime.date.today()), "price": i_2.get("price"),
+        {"id": 2, "category": "Доходы", "date": str(datetime.date.today()), "amount": i_2.get("amount"),
          "description": i_2.get("description")},
-        {"id": 3, "category": "Расходы", "date": str(datetime.date.today()), "price": s_1.get("price"),
+        {"id": 3, "category": "Расходы", "date": str(datetime.date.today()), "amount": s_1.get("amount"),
          "description": s_1.get("description")},
-        {"id": 4, "category": "Расходы", "date": str(datetime.date.today()), "price": s_2.get("price"),
+        {"id": 4, "category": "Расходы", "date": str(datetime.date.today()), "amount": s_2.get("amount"),
          "description": s_2.get("description")}]
 
 
 @pytest.mark.parametrize("mode, expected",
                          [("Доходы", [{"id": 1, "category": "Доходы", "date": str(datetime.date.today()),
-                                       "price": i_1.get("price"), "description": i_1.get("description")},
+                                       "amount": i_1.get("amount"), "description": i_1.get("description")},
                                       {"id": 2, "category": "Доходы", "date": str(datetime.date.today()),
-                                       "price": i_2.get("price"), "description": i_2.get("description")}]),
+                                       "amount": i_2.get("amount"), "description": i_2.get("description")}]),
                           ("Расходы", [{"id": 3, "category": "Расходы", "date": str(datetime.date.today()),
-                                        "price": s_1.get("price"), "description": s_1.get("description")},
+                                        "amount": s_1.get("amount"), "description": s_1.get("description")},
                                        {"id": 4, "category": "Расходы", "date": str(datetime.date.today()),
-                                        "price": s_2.get("price"), "description": s_2.get("description")}])])
+                                        "amount": s_2.get("amount"), "description": s_2.get("description")}])])
 def test_get_by_category(mode, expected):
     """Тест получения данных по категории"""
     assert my_test.get_data_by_category(mode) == expected
@@ -68,31 +67,31 @@ def test_get_by_category(mode, expected):
                                                          f"{datetime.date.today().day:02}",
                                                          [{"id": 1, "category": "Доходы",
                                                            "date": str(datetime.date.today()),
-                                                           "price": i_1.get("price"),
+                                                           "amount": i_1.get("amount"),
                                                            "description": i_1.get("description")},
                                                           {"id": 2, "category": "Доходы",
                                                            "date": str(datetime.date.today()),
-                                                           "price": i_2.get("price"),
+                                                           "amount": i_2.get("amount"),
                                                            "description": i_2.get("description")},
                                                           {"id": 3, "category": "Расходы",
                                                            "date": str(datetime.date.today()),
-                                                           "price": s_1.get("price"),
+                                                           "amount": s_1.get("amount"),
                                                            "description": s_1.get("description")},
                                                           {"id": 4, "category": "Расходы",
                                                            "date": str(datetime.date.today()),
-                                                           "price": s_2.get("price"),
+                                                           "amount": s_2.get("amount"),
                                                            "description": s_2.get("description")}])])
 def test_get_by_date(year, month, day, expected):
     """Тест получения данных по дате"""
     assert my_test.get_data_by_date(year, month, day) == expected
 
 
-@pytest.mark.parametrize("price, expected", [(s_1.get("price"),
+@pytest.mark.parametrize("amount, expected", [(s_1.get("amount"),
                                               [{"id": 3, "category": "Расходы", "date": str(datetime.date.today()),
-                                                "price": s_1.get("price"), "description": s_1.get("description")}])])
-def test_get_by_price(price, expected):
+                                                "amount": s_1.get("amount"), "description": s_1.get("description")}])])
+def test_get_by_amount(amount, expected):
     """Тест получения данных по id"""
-    assert my_test.get_data_by_sum(price) == expected
+    assert my_test.get_data_by_sum(amount) == expected
 
 
 @pytest.mark.parametrize("data_id, data, expected", [(1, c_1, "Успешное изменение данных")])

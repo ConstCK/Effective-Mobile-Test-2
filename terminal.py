@@ -14,7 +14,7 @@ class Terminal:
     def greetings(self) -> None:
         """Приветствие в терминале"""
         print(f"Добро пожаловать в {self.conn}")
-        print(f"Используйте ввод чисел (1-7) для навигации по меню")
+        print(f"Используйте ввод чисел (0-8) для навигации по меню")
         print("*"*100)
 
     @staticmethod
@@ -140,7 +140,7 @@ class Terminal:
                 case 1:
                     print(self.get_meta_data())
                     print("*"*100)
-                    time.sleep(3)
+                    time.sleep(1)
                 case 2:
                     self.get_all_data()
                 case 3:

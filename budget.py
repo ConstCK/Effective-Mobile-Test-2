@@ -1,5 +1,5 @@
 import datetime
-from typing import Callable, Literal
+from typing import Literal
 
 import jsonlines
 
@@ -57,11 +57,11 @@ class Budget:
         """Получение информации из базы данных по сумме"""
         all_data = self.get_all_data()
         if mode == "greater":
-            result = list(filter(lambda obj: int(obj.get('price')) > amount, all_data[1:]))
+            result = list(filter(lambda obj: int(obj.get('amount')) > amount, all_data[1:]))
         elif mode == "lower":
-            result = list(filter(lambda obj: int(obj.get('price')) < amount, all_data[1:]))
+            result = list(filter(lambda obj: int(obj.get('amount')) < amount, all_data[1:]))
         elif mode == "equal":
-            result = list(filter(lambda obj: int(obj.get('price')) == amount, all_data[1:]))
+            result = list(filter(lambda obj: int(obj.get('amount')) == amount, all_data[1:]))
         else:
             raise Exception("Ошибка режима")
         return result
@@ -72,7 +72,7 @@ class Budget:
         data = self.create_spending(data) if mode == "Расходы" else self.create_income(data)
         if self.validator.check_duplicates(data, all_data):
             return "Объект уже существует"
-        self.change_balance(mode=mode, value=data.get("price"))
+        self.change_balance(mode=mode, value=data.get("amount"))
         with jsonlines.open(self.db, mode="a") as writer:
             writer.write(data)
         return "Успешное добавление данных"
@@ -138,14 +138,14 @@ class Budget:
         balance: int = meta[0].get("balance")
         spending: int = meta[0].get("spending")
         income: int = meta[0].get("income")
-        print(reserved_data.get("price"))
-        print(new_data.get("price"))
+        print(reserved_data.get("amount"))
+        print(new_data.get("amount"))
         if new_data.get("category") == "Доходы":
-            income = income + new_data.get("price") - reserved_data.get("price")
-            balance = balance + new_data.get("price") - reserved_data.get("price")
+            income = income + new_data.get("amount") - reserved_data.get("amount")
+            balance = balance + new_data.get("amount") - reserved_data.get("amount")
         elif new_data.get("category") == "Расходы":
-            balance = balance - new_data.get("price") + reserved_data.get("price")
-            spending = spending + new_data.get("price") - reserved_data.get("price")
+            balance = balance - new_data.get("amount") + reserved_data.get("amount")
+            spending = spending + new_data.get("amount") - reserved_data.get("amount")
         meta[0].update({"balance": balance, "spending": spending, "income": income})
         with jsonlines.open(self.db, mode="w") as writer:
             writer.write_all(all_data)
